@@ -1,0 +1,16 @@
+{
+  "name": "@opensdkdev/purelymail",
+  "private": true,
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "scripts": {
+    "generate-typescript": "fern generate --group typescript --force",
+    "definition": "fern write-definition --log-level debug",
+    "check": "fern check "
+  },
+  "packageManager": "pnpm@10.31.0",
+  "devDependencies": {
+    "fern-api": "^4.42.0"
+  }
+}

@@ -1,0 +1,25 @@
+api:
+  specs:
+    - openapi: "./api.json"
+      origin: "https://news.purelymail.com/api/index.html"
+      settings:
+        title-as-schema-name: true
+        inline-path-parameters: false
+        inline-all-of-schemas: true
+        prefer-undiscriminated-unions-with-literals: true
+
+groups:
+  typescript:
+    generators:
+      - name: fernapi/fern-typescript-sdk
+        version: 3.59.3
+        output:
+          location: npm
+          package-name: purelymail
+          token: OIDC
+        config:
+            namespaceExport: PurelyMailSDK
+        github:
+          repository: opensdkdev/purelymail-typescript
+          branch: main
+          mode: push

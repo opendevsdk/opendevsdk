@@ -1,0 +1,8 @@
+{
+  "name": "@opensdkdev/opensdkdev",
+  "private": true,
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "packageManager": "pnpm@10.31.0"
+}
