@@ -1,4 +1,5 @@
-.definition
+**/.definition
+.turbo
 node_modules
 .vscode
 opencode.json

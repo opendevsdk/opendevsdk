@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - coming_soon
+  workflow_dispatch:
+    inputs:
+      force_build:
+        description: Bypass Turbo cache for this run
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  build:
+    name: Provision and Build SDKs
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.31.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+          registry-url: https://registry.npmjs.org
+
+      - name: Configure Turbo remote cache
+        env:
+          INPUT_TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          INPUT_TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+        run: |
+          if [ -n "$INPUT_TURBO_TOKEN" ] && [ -n "$INPUT_TURBO_TEAM" ]; then
+            {
+              echo "TURBO_TOKEN=$INPUT_TURBO_TOKEN"
+              echo "TURBO_TEAM=$INPUT_TURBO_TEAM"
+              echo "TURBO_CACHE=remote:rw"
+            } >> "$GITHUB_ENV"
+          fi
+
+      - name: Cache Turbo artifacts
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ hashFiles('package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'turbo.json', 'packages/*/package.json', 'packages/*/fern/generators.yml', 'scripts/**') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-${{ hashFiles('package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'turbo.json', 'packages/*/package.json', 'packages/*/fern/generators.yml', 'scripts/**') }}-
+            ${{ runner.os }}-turbo-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate publishing secrets
+        env:
+          GH_TOKEN_VALUE: ${{ secrets.OPENSDKDEV_GH_TOKEN }}
+          NPM_TOKEN_VALUE: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN_VALUE" ]; then
+            echo "Missing secret OPENSDKDEV_GH_TOKEN" >&2
+            exit 1
+          fi
+
+          if [ -z "$NPM_TOKEN_VALUE" ]; then
+            echo "Missing secret NPM_TOKEN" >&2
+            exit 1
+          fi
+
+      - name: Validate package naming and generator targets
+        run: pnpm validate:packages
+
+      - name: Build SDK packages
+        env:
+          GH_TOKEN: ${{ secrets.OPENSDKDEV_GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force_build }}" = "true" ]; then
+            pnpm build:force
+          else
+            pnpm build
+          fi

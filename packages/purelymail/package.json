@@ -5,9 +5,11 @@
     "access": "restricted"
   },
   "scripts": {
-    "generate-typescript": "fern generate --group typescript --force",
-    "definition": "fern write-definition --log-level debug",
-    "check": "fern check "
+    "build": "pnpm provision && pnpm definition && pnpm generate",
+    "generate": "fern generate --group typescript --force",
+    "definition": "fern write-definition",
+    "check": "fern check",
+    "provision": "node ../../scripts/provision-sdks.mjs --package-dir ."
   },
   "packageManager": "pnpm@10.31.0",
   "devDependencies": {
