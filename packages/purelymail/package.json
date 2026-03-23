@@ -6,11 +6,11 @@
     "access": "restricted"
   },
   "scripts": {
-    "build": "pnpm provision && pnpm definition && pnpm generate",
     "provision": "node ../../scripts/provision.mjs --package-dir .",
-    "generate": "fern generate --group typescript --force",
+    "publish": "fern generate --group typescript",
     "definition": "fern write-definition",
-    "check": "fern check"
+    "check": "fern check",
+    "ci:publish": "pnpm provision && pnpm check && pnpm definition && pnpm publish"
   },
   "packageManager": "pnpm@10.31.0",
   "devDependencies": {

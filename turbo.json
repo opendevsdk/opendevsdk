@@ -12,22 +12,26 @@
     "CI",
     "GH_TOKEN",
     "GITHUB_*",
-    "NODE_AUTH_TOKEN",
     "NPM_TOKEN"
   ],
   "tasks": {
-    "build": {
-      "dependsOn": [
-        "^build"
-      ],
+    "ci:publish": {
       "outputs": [
         "fern/.definition/**"
       ]
     },
+    "provision": {
+      "outputs": []
+    },
+    "definition": {
+      "outputs": [
+        "fern/.definition/**"
+      ]
+    },
+    "publish": {
+      "outputs": []
+    },
     "check": {
-      "dependsOn": [
-        "^check"
-      ],
       "outputs": []
     }
   }

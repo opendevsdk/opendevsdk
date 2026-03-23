@@ -5,11 +5,10 @@
     "access": "restricted"
   },
   "scripts": {
-    "build": "turbo run build",
-    "build:force": "turbo run build --force",
     "check": "turbo run check",
-    "provision": "node scripts/provision.mjs",
-    "validate:packages": "node scripts/provision.mjs --validate-only"
+    "publish": "turbo run publish",
+    "provision": "turbo run provision",
+    "ci:publish": "turbo run ci:publish"
   },
   "packageManager": "pnpm@10.31.0",
   "devDependencies": {

@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - coming_soon
+      - main
   workflow_dispatch:
     inputs:
       force_build:
@@ -40,26 +40,12 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
           registry-url: https://registry.npmjs.org
 
-      - name: Configure Turbo remote cache
-        env:
-          INPUT_TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-          INPUT_TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-        run: |
-          if [ -n "$INPUT_TURBO_TOKEN" ] && [ -n "$INPUT_TURBO_TEAM" ]; then
-            {
-              echo "TURBO_TOKEN=$INPUT_TURBO_TOKEN"
-              echo "TURBO_TEAM=$INPUT_TURBO_TEAM"
-              echo "TURBO_CACHE=remote:rw"
-            } >> "$GITHUB_ENV"
-          fi
-
       - name: Cache Turbo artifacts
         uses: actions/cache@v4
         with:
-          path: .turbo
-          key: ${{ runner.os }}-turbo-${{ hashFiles('package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'turbo.json', 'packages/*/package.json', 'packages/*/fern/generators.yml', 'scripts/**') }}-${{ github.sha }}
+          path: .turbo/cache
+          key: ${{ runner.os }}-turbo-${{ hashFiles('package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'turbo.json', 'packages/*/package.json', 'packages/*/fern/**', 'scripts/**', '.github/workflows/ci.yml') }}
           restore-keys: |
-            ${{ runner.os }}-turbo-${{ hashFiles('package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'turbo.json', 'packages/*/package.json', 'packages/*/fern/generators.yml', 'scripts/**') }}-
             ${{ runner.os }}-turbo-
 
       - name: Install dependencies
@@ -67,11 +53,11 @@ jobs:
 
       - name: Validate publishing secrets
         env:
-          GH_TOKEN_VALUE: ${{ secrets.OPENDEVSDK_GH_TOKEN }}
+          GH_TOKEN_VALUE: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN_VALUE: ${{ secrets.NPM_TOKEN }}
         run: |
           if [ -z "$GH_TOKEN_VALUE" ]; then
-            echo "Missing secret OPENDEVSDK_GH_TOKEN" >&2
+            echo "Missing secret GH_TOKEN" >&2
             exit 1
           fi
 
@@ -85,12 +71,6 @@ jobs:
 
       - name: Build SDK packages
         env:
-          GH_TOKEN: ${{ secrets.OPENDEVSDK_GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force_build }}" = "true" ]; then
-            pnpm build:force
-          else
-            pnpm build
-          fi
+        run: pnpm turbo run ci:publish --cache=local:rw --force

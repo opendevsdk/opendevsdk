@@ -20,7 +20,7 @@ async function ensurePackage(packageName, repository) {
     return;
   }
 
-  const npmToken = process.env.NPM_TOKEN ?? process.env.NODE_AUTH_TOKEN;
+  const npmToken = process.env.NPM_TOKEN
   if (typeof npmToken !== "string" || npmToken.trim().length === 0) {
     throw new Error(`NPM_TOKEN is required to create ${packageName}.`);
   }
@@ -50,7 +50,6 @@ async function ensurePackage(packageName, repository) {
       cwd: tempDir,
       env: {
         ...process.env,
-        NODE_AUTH_TOKEN: npmToken,
         NPM_TOKEN: npmToken
       }
     });
@@ -77,7 +76,7 @@ async function packageExists(packageName) {
 }
 
 async function ensureTrustedPublisher(packageName, repository) {
-  const npmToken = process.env.NPM_TOKEN ?? process.env.NODE_AUTH_TOKEN;
+  const npmToken = process.env.NPM_TOKEN
   if (typeof npmToken !== "string" || npmToken.trim().length === 0) {
     throw new Error(`NPM_TOKEN is required to configure trusted publishing for ${packageName}.`);
   }
