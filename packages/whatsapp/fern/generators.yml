@@ -1,14 +1,13 @@
 groups:
-  local:
-    typescript:
-      generators:
-        - name: fernapi/fern-typescript-sdk
-          version: 3.59.3
-          output:
-            location: npm
-            package-name: "@opendevsdk/whatsapp-typescript"
-            token: OIDC
-          config:
-              namespaceExport: WhatsappSDK
-          github:
-            repository: opendevsdk/whatsapp-typescript
+ typescript:
+   generators:
+     - name: fernapi/fern-typescript-sdk
+       version: 3.59.3
+       output:
+         location: npm
+         package-name: "@opendevsdk/whatsapp-typescript"
+         token: OIDC
+       config:
+           namespaceExport: WhatsappSDK
+       github:
+         repository: opendevsdk/whatsapp-typescript
