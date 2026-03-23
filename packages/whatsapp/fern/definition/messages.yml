@@ -415,7 +415,8 @@ types:
   SendMessageRequest:
     properties:
       messaging_product:
-        type: literal<"      to: string
+        type: literal<"whatsapp">
+      to: string
       type: MessageType
       preview_url: optional<boolean>
       recipient_type: optional<string>
@@ -449,7 +450,8 @@ types:
   SendMessageResponse:
     properties:
       messaging_product:
-        type: literal<"      contacts: list<SendMessageContactResult>
+        type: literal<"whatsapp">
+      contacts: list<SendMessageContactResult>
       messages: list<SendMessageMessageResult>
 
   # ---------------------------------------------------------------------------
@@ -463,7 +465,8 @@ types:
   ShowTypingIndicatorRequest:
     properties:
       messaging_product:
-        type: literal<"      status:
+        type: literal<"whatsapp">
+      status:
         type: literal<"read">
       message_id: string
       typing_indicator: TypingIndicator

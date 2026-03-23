@@ -143,7 +143,7 @@ types:
       - name: zu
         value: zu
 
-ISOCountryCode:
+ ISOCountryCode:
     docs: ISO 3166-1 alpha-2 country codes supported by WhatsApp data localisation.
     enum:
       - AU
@@ -161,20 +161,18 @@ ISOCountryCode:
       - AE
       - CA
 
-  # ---------------------------------------------------------------------------
-  # Error object
-  # ---------------------------------------------------------------------------
-  WhatsappApiErrorObject:
-    properties:
-      code: integer
-      title: string
-      message: string
-      error_data:
-        type: WhatsappApiErrorData
-
-  WhatsappApiErrorData:
-    properties:
-      details: string
-
-  WhatsappApiErrors:
-    type: list<WhatsappApiErrorObject>
+ # ---------------------------------------------------------------------------
+ # Error object
+ # ---------------------------------------------------------------------------
+ ErrorObject:
+   properties:
+     code: integer
+     title: string
+     message: string
+     error_data:
+       type: ErrorData 
+ ErrorData:
+   properties:
+     details: string 
+ Errors:
+   type: list<ErrorObject> 
