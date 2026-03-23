@@ -8,8 +8,8 @@
     "build": "turbo run build",
     "build:force": "turbo run build --force",
     "check": "turbo run check",
-    "provision": "node scripts/provision-origins.mjs",
-    "validate:packages": "node scripts/provision-origins.mjs --validate-only"
+    "provision": "node scripts/provision.mjs",
+    "validate:packages": "node scripts/provision.mjs --validate-only"
   },
   "packageManager": "pnpm@10.31.0",
   "devDependencies": {

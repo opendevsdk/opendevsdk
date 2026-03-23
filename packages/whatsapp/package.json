@@ -1,11 +1,13 @@
 {
   "name": "@opendevsdk/whatsapp",
+  "version": "0.0.2",
   "private": true,
   "publishConfig": {
     "access": "restricted"
   },
   "scripts": {
     "build": "pnpm provision && pnpm definition && pnpm generate",
+    "provision": "node ../../scripts/provision.mjs --package-dir .",
     "generate": "fern generate --group typescript --force",
     "definition": "fern write-definition",
     "check": "fern check"
