@@ -1,25 +1,22 @@
-import { githubOwner, packagePrefix } from "../../config.mjs";
 import { log } from "../../utils/log.mjs";
 
 export function createTypescriptProvisioner({ githubProvisioner, npmProvisioner }) {
   return {
     id: "typescript",
     getTargets(context) {
-      const targetName = `${context.packageSlug}-typescript`;
-      const generatedPackageName = `${packagePrefix}${targetName}`;
-      const githubRepository = `${githubOwner}/${targetName}`;
+      const targetName = `${context.apiSlug}-typescript`;
 
       return [
         {
           context,
           targetName,
-          generatedPackageName,
-          githubRepository
+          generatedPackageName: context.packageName,
+          githubRepository: context.githubRepository
         }
       ];
     },
     async provision(target) {
-      log(`Provisioning TypeScript target for ${target.context.packageName}`);
+      log(`Provisioning TypeScript target for ${target.context.apiSlug}`);
       await githubProvisioner.provision({
         repository: target.githubRepository,
         packageName: target.generatedPackageName

@@ -1,0 +1,194 @@
+types:
+  Compiler:
+    enum:
+      - pdflatex
+      - latex
+      - xelatex
+      - lualatex
+
+  CompileStatus:
+    enum:
+      - name: success
+        value: success
+      - name: failure
+        value: failure
+      - name: error
+        value: error
+      - name: unavailable
+        value: unavailable
+      - name: timedout
+        value: timedout
+      - name: terminated
+        value: terminated
+      - name: compileInProgress
+        value: compile-in-progress
+      - name: conflict
+        value: conflict
+      - name: missingUpdates
+        value: missing-updates
+      - name: validationPass
+        value: validation-pass
+      - name: validationFail
+        value: validation-fail
+      - name: stoppedOnFirstError
+        value: stopped-on-first-error
+
+  SyncType:
+    enum:
+      - name: full
+        value: full
+      - name: incremental
+        value: incremental
+      - name: historyFull
+        value: history-full
+      - name: historyIncremental
+        value: history-incremental
+
+  CheckMode:
+    enum:
+      - error
+      - validate
+
+  CompileOptions:
+    properties:
+      compiler: optional<Compiler>
+      timeout:
+        type: optional<integer>
+        docs: Requested timeout in seconds. CLSI caps this at 600 seconds.
+      draft: optional<boolean>
+      stopOnFirstError: optional<boolean>
+      compileFromClsiCache: optional<boolean>
+      populateClsiCache: optional<boolean>
+      enablePdfCaching: optional<boolean>
+      pdfCachingMinChunkSize: optional<integer>
+      imageName:
+        type: optional<string>
+        docs: TeX Live image name when sandboxed compiles are enabled.
+      compileGroup: optional<string>
+      check: optional<CheckMode>
+      flags: optional<list<string>>
+      syncType: optional<SyncType>
+      syncState: optional<string>
+      historyId:
+        type: optional<string>
+        docs: Mongo-style object id or numeric history id.
+      metricsPath: optional<string>
+      metricsMethod: optional<string>
+      clsiPerfVariant: optional<string>
+      editorId:
+        type: optional<string>
+        docs: UUID used when interacting with CLSI cache.
+      buildId:
+        type: optional<string>
+        docs: Reuse a prior build identifier for cached output paths.
+
+  CompileResource:
+    properties:
+      path: string
+      content: optional<string>
+      url: optional<string>
+      fallbackURL: optional<string>
+      modified:
+        type: optional<datetime>
+        docs: Remote resource modification timestamp used for cache invalidation.
+
+  CompileRequest:
+    properties:
+      options: optional<CompileOptions>
+      rootResourcePath:
+        type: optional<string>
+        docs: Main file to compile. Defaults to `main.tex`.
+      resources: optional<list<CompileResource>>
+      baseHistoryVersion: optional<integer>
+      globalBlobs: optional<list<unknown>>
+      rawSnapshot: optional<unknown>
+      rawChangeOperations: optional<unknown>
+      filestoreBlobPrefix: optional<string>
+
+  CompileRequestEnvelope:
+    properties:
+      compile: CompileRequest
+
+  OutputFile:
+    properties:
+      path: string
+      type: optional<string>
+      build: optional<string>
+      size: optional<integer>
+      url: optional<string>
+
+  CompileResult:
+    properties:
+      status: CompileStatus
+      error: optional<string>
+      baseHistoryVersion: optional<integer>
+      stats:
+        type: map<string, unknown>
+        docs: Arbitrary compile metrics emitted by the service.
+      timings:
+        type: map<string, unknown>
+        docs: Duration metrics in milliseconds.
+      buildId: optional<string>
+      clsiCacheShard: optional<string>
+      outputUrlPrefix:
+        type: optional<string>
+        docs: Prefix expected by Overleaf clients when constructing output URLs.
+      outputFiles: list<OutputFile>
+
+  CompileResponse:
+    properties:
+      compile: CompileResult
+
+  PdfPosition:
+    properties:
+      page: integer
+      h: double
+      v: double
+      height: double
+      width: double
+
+  CodePosition:
+    properties:
+      file: string
+      line: integer
+      column: integer
+
+  SyncFromCodeResponse:
+    properties:
+      pdf: list<PdfPosition>
+      downloadedFromCache: boolean
+
+  SyncFromPdfResponse:
+    properties:
+      code: list<CodePosition>
+      downloadedFromCache: boolean
+
+  TexcountResult:
+    properties:
+      encode: string
+      textWords: integer
+      headWords: integer
+      outside: integer
+      headers: integer
+      elements: integer
+      mathInline: integer
+      mathDisplay: integer
+      errors: integer
+      messages: string
+
+  WordcountResponse:
+    properties:
+      texcount: TexcountResult
+
+  HealthCheckFlags:
+    properties:
+      processTooOld: optional<boolean>
+      diskCritical: optional<boolean>
+
+  HealthCheckTextResponse: string
+
+  HealthCheckResponse:
+    discriminated: false
+    union:
+      - HealthCheckTextResponse
+      - HealthCheckFlags

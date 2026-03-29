@@ -1,0 +1,62 @@
+types:
+  ClsiEnvironmentVariables:
+    docs: |
+      Documentation-only reference for CLSI environment variables.
+
+      This type is intentionally isolated and is not referenced by any endpoint
+      request or response models.
+    properties:
+      ALLOWED_COMPILE_GROUPS:
+        type: optional<string>
+        docs: Space-separated list of allowed compile groups.
+      ALLOWED_IMAGES:
+        type: optional<string>
+        docs: Space-separated list of allowed Docker TeX Live images.
+      CATCH_ERRORS:
+        type: optional<boolean>
+        docs: Set to `true` to log uncaught exceptions.
+      COMPILE_GROUP_DOCKER_CONFIGS:
+        type: optional<string>
+        docs: JSON string containing Docker configuration per compile group.
+      SANDBOXED_COMPILES:
+        type: optional<boolean>
+        docs: Enable sibling-container compiles.
+      SANDBOXED_COMPILES_HOST_DIR_COMPILES:
+        type: optional<string>
+        docs: Working directory for LaTeX compiles on the host.
+      SANDBOXED_COMPILES_HOST_DIR_OUTPUT:
+        type: optional<string>
+        docs: Output directory for LaTeX compiles on the host.
+      COMPILE_SIZE_LIMIT:
+        type: optional<string>
+        docs: Body size limit passed to `body-parser`.
+      DOCKER_RUNTIME:
+        type: optional<string>
+        docs: Docker runtime name.
+      FILESTORE_DOMAIN_OVERRIDE:
+        type: optional<string>
+        docs: Override URL for the filestore service.
+      FILESTORE_PARALLEL_FILE_DOWNLOADS:
+        type: optional<integer>
+        docs: Number of files to download in parallel.
+      LISTEN_ADDRESS:
+        type: optional<string>
+        docs: Address for the REST API listener.
+      PROCESS_LIFE_SPAN_LIMIT_MS:
+        type: optional<integer>
+        docs: Process lifespan limit in milliseconds.
+      SMOKE_TEST:
+        type: optional<boolean>
+        docs: Enable periodic smoke tests.
+      TEXLIVE_IMAGE:
+        type: optional<string>
+        docs: Default TeX Live Docker image.
+      TEX_LIVE_IMAGE_NAME_OVERRIDE:
+        type: optional<string>
+        docs: Override registry name for TeX Live images.
+      TEXLIVE_IMAGE_USER:
+        type: optional<string>
+        docs: User to run as inside the TeX Live image.
+      TEXLIVE_OPENOUT_ANY:
+        type: optional<string>
+        docs: Value for TeX Live's `openout_any` environment variable.

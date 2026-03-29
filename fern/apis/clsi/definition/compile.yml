@@ -1,0 +1,70 @@
+imports:
+  types: types.yml
+
+service:
+  base-path: ""
+  auth: false
+  endpoints:
+    compileProject:
+      docs: |
+        Compile a project and return generated output metadata.
+
+        CLSI persists the project workspace between requests. The request body
+        must be wrapped in a top-level `compile` object.
+      url: default
+      path: /project/{projectId}/compile
+      method: POST
+      path-parameters:
+        projectId: string
+      request:
+        body: types.CompileRequestEnvelope
+      response: types.CompileResponse
+
+    stopProjectCompile:
+      docs: Stop an active compile for the project if one is running.
+      url: default
+      path: /project/{projectId}/compile/stop
+      method: POST
+      path-parameters:
+        projectId: string
+
+    clearProjectCache:
+      docs: Stop any active compile and remove persisted project state.
+      url: default
+      path: /project/{projectId}
+      method: DELETE
+      path-parameters:
+        projectId: string
+
+    compileProjectForUser:
+      docs: |
+        Compile a project in a user-isolated workspace.
+
+        The upstream service expects `userId` to be a 24-character hex string.
+      url: default
+      path: /project/{projectId}/user/{userId}/compile
+      method: POST
+      path-parameters:
+        projectId: string
+        userId: string
+      request:
+        body: types.CompileRequestEnvelope
+      response: types.CompileResponse
+
+    stopProjectCompileForUser:
+      docs: Stop an active user-scoped compile.
+      url: default
+      path: /project/{projectId}/user/{userId}/compile/stop
+      method: POST
+      path-parameters:
+        projectId: string
+        userId: string
+
+    clearProjectCacheForUser:
+      docs: Remove user-scoped persisted compile state for a project.
+      url: default
+      path: /project/{projectId}/user/{userId}
+      method: DELETE
+      path-parameters:
+        projectId: string
+        userId: string

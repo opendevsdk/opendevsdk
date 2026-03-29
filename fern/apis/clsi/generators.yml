@@ -1,0 +1,13 @@
+groups:
+ clsi:
+   generators:
+     - name: fernapi/fern-typescript-sdk
+       version: 3.59.3
+       output:
+         location: npm
+         package-name: "@opendevsdk/clsi-typescript"
+         token: OIDC
+       config:
+           namespaceExport: ClsiSDK
+       github:
+         repository: opendevsdk/clsi-typescript

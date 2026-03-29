@@ -11,4 +11,4 @@ const currentFilePath = fileURLToPath(import.meta.url);
 const provisionersDir = path.dirname(currentFilePath);
 
 export const repoRoot = path.resolve(provisionersDir, "..");
-export const packagesDir = path.join(repoRoot, "packages");
+export const apisDir = path.join(repoRoot, "fern", "apis");

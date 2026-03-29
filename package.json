@@ -4,10 +4,15 @@
 	"publishConfig": {
 		"access": "restricted"
 	},
-	"scripts": {},
+	"scripts": {
+		"check": "fern check",
+		"generate": "fern generate --force"
+	},
 	"packageManager": "pnpm@10.31.0",
 	"devDependencies": {
+		"fern-api": "4.43.1",
 		"dotenv": "17.3.1",
-		"@biomejs/biome": "2.4.8"
+		"@biomejs/biome": "2.4.8",
+		"yaml": "2.8.1"
 	}
 }

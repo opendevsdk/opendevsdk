@@ -1,6 +1,6 @@
 api:
   specs:
-    - openapi: "./api.json"
+    - openapi: "./definition/api.json"
       origin: "https://news.purelymail.com/api/index.html"
       settings:
         title-as-schema-name: true

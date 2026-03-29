@@ -1,0 +1,17 @@
+name: clsi
+docs: |
+  Common LaTeX Service Interface (CLSI).
+
+  CLSI exposes a JSON HTTP API for compiling LaTeX projects, retrieving
+  SyncTeX mappings, checking word counts, and performing basic operational
+  health checks. Compile responses include output file metadata plus direct
+  download URLs for generated artifacts.
+
+  The upstream service listens on `http://localhost:3013` by default.
+
+environments:
+  Local:
+    urls:
+      default: http://localhost:3013
+
+default-environment: Local

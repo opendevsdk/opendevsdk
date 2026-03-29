@@ -1,0 +1,35 @@
+imports:
+  types: types.yml
+
+service:
+  base-path: ""
+  auth: false
+  endpoints:
+    wordcount:
+      docs: Run `texcount` for a file in the project workspace.
+      url: default
+      path: /project/{projectId}/wordcount
+      method: GET
+      path-parameters:
+        projectId: string
+      request:
+        name: WordcountRequest
+        query-parameters:
+          file: optional<string>
+          image: optional<string>
+      response: types.WordcountResponse
+
+    wordcountForUser:
+      docs: Run `texcount` in a user-isolated workspace.
+      url: default
+      path: /project/{projectId}/user/{userId}/wordcount
+      method: GET
+      path-parameters:
+        projectId: string
+        userId: string
+      request:
+        name: WordcountForUserRequest
+        query-parameters:
+          file: optional<string>
+          image: optional<string>
+      response: types.WordcountResponse

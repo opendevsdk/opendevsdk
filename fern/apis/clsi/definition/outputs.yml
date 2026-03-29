@@ -1,0 +1,22 @@
+service:
+  base-path: ""
+  auth: false
+  endpoints:
+    downloadOutputArchive:
+      docs: Download all generated output files for a build as `output.zip`.
+      url: default
+      path: /project/{projectId}/build/{buildId}/output/output.zip
+      method: GET
+      path-parameters:
+        projectId: string
+        buildId: string
+
+    downloadOutputArchiveForUser:
+      docs: Download all generated output files for a user-scoped build as `output.zip`.
+      url: default
+      path: /project/{projectId}/user/{userId}/build/{buildId}/output/output.zip
+      method: GET
+      path-parameters:
+        projectId: string
+        userId: string
+        buildId: string

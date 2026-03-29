@@ -1,0 +1,50 @@
+imports:
+  types: types.yml
+
+service:
+  base-path: ""
+  auth: false
+  endpoints:
+    getProjectStatus:
+      docs: Lightweight project status probe that returns plain `OK`.
+      url: default
+      path: /project/{projectId}/status
+      method: GET
+      path-parameters:
+        projectId: string
+      response: string
+
+    postProjectStatus:
+      docs: POST variant of the project status probe.
+      url: default
+      path: /project/{projectId}/status
+      method: POST
+      path-parameters:
+        projectId: string
+      response: string
+
+    getServiceStatus:
+      docs: Service liveness probe that returns `CLSI is alive`.
+      url: default
+      path: /status
+      method: GET
+      response: string
+
+    healthCheck:
+      docs: |
+        Operational health probe.
+
+        On success the service returns plain text `OK`. When the process is too
+        old or disk is critically low, it returns a JSON object describing the
+        condition instead.
+      url: default
+      path: /health_check
+      method: GET
+      response: types.HealthCheckResponse
+
+    runSmokeTest:
+      docs: Force a smoke test compile and return plain text `OK` on success.
+      url: default
+      path: /smoke_test_force
+      method: GET
+      response: string

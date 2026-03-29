@@ -1,0 +1,84 @@
+imports:
+  types: types.yml
+
+service:
+  base-path: ""
+  auth: false
+  endpoints:
+    syncFromCode:
+      docs: Map a source file position to one or more PDF positions using SyncTeX.
+      url: default
+      path: /project/{projectId}/sync/code
+      method: GET
+      path-parameters:
+        projectId: string
+      request:
+        name: SyncFromCodeRequest
+        query-parameters:
+          file: string
+          line: integer
+          column: integer
+          imageName: optional<string>
+          editorId: optional<string>
+          buildId: optional<string>
+          compileFromClsiCache: optional<boolean>
+      response: types.SyncFromCodeResponse
+
+    syncFromPdf:
+      docs: Map a PDF position back to source code positions using SyncTeX.
+      url: default
+      path: /project/{projectId}/sync/pdf
+      method: GET
+      path-parameters:
+        projectId: string
+      request:
+        name: SyncFromPdfRequest
+        query-parameters:
+          page: integer
+          h: double
+          v: double
+          imageName: optional<string>
+          editorId: optional<string>
+          buildId: optional<string>
+          compileFromClsiCache: optional<boolean>
+      response: types.SyncFromPdfResponse
+
+    syncFromCodeForUser:
+      docs: Map a source file position to PDF positions in a user-isolated workspace.
+      url: default
+      path: /project/{projectId}/user/{userId}/sync/code
+      method: GET
+      path-parameters:
+        projectId: string
+        userId: string
+      request:
+        name: SyncFromCodeForUserRequest
+        query-parameters:
+          file: string
+          line: integer
+          column: integer
+          imageName: optional<string>
+          editorId: optional<string>
+          buildId: optional<string>
+          compileFromClsiCache: optional<boolean>
+      response: types.SyncFromCodeResponse
+
+    syncFromPdfForUser:
+      docs: Map a PDF position back to source code in a user-isolated workspace.
+      url: default
+      path: /project/{projectId}/user/{userId}/sync/pdf
+      method: GET
+      path-parameters:
+        projectId: string
+        userId: string
+      request:
+        name: SyncFromPdfForUserRequest
+        query-parameters:
+          page: integer
+          h: double
+          v: double
+          imageName: optional<string>
+          editorId: optional<string>
+          buildId: optional<string>
+          compileFromClsiCache: optional<boolean>
+      response: types.SyncFromPdfResponse
